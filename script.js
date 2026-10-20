@@ -128,9 +128,28 @@ async function loadWebsites() {
       })
     );
 
-    const entries = results
-      .filter(Boolean)
-      .sort((a, b) => a.name.localeCompare(b.name));
+    const folderOrder = [
+  "Test-Website",
+  "Versions",
+  "My-New-Website"
+];
+
+const entries = results
+  .filter(Boolean)
+  .sort((a, b) => {
+    const indexA = folderOrder.indexOf(a.name);
+    const indexB = folderOrder.indexOf(b.name);
+
+    // Folders in folderOrder appear first.
+    if (indexA === -1 && indexB === -1) {
+      return a.name.localeCompare(b.name);
+    }
+
+    if (indexA === -1) return 1;
+    if (indexB === -1) return -1;
+
+    return indexA - indexB;
+  });
 
     websiteList.innerHTML = "";
 
