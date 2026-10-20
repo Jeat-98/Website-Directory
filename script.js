@@ -130,8 +130,9 @@ async function loadWebsites() {
 
     const folderOrder = [
   "Test-Website",
-  "Versions",
-  "My-New-Website"
+  "Collection-Gallery_v5",
+  "Collection-Gallery_v6",
+  "Collection-Gallery_v7"
 ];
 
 const entries = results
