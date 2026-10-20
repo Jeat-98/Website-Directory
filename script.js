@@ -1,5 +1,5 @@
 
-const GITHUB_USERNAME = "YOUR_GITHUB_USERNAME";
+const GITHUB_USERNAME = "Jeat-98";
 const REPOSITORY_NAME = "Website-Directory";
 const BRANCH = "main";
 
