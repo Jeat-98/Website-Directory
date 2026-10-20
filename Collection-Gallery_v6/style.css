@@ -1,0 +1,1972 @@
+/* ==============================
+   GENERAL
+============================== */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f7f4ef;
+    color: #333;
+}
+
+
+/* ==============================
+   HEADER
+============================== */
+
+header {
+    background: #ffffff;
+    padding: 35px 20px 25px;
+    text-align: center;
+    border-bottom: 1px solid #e5e0d8;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 32px;
+    color: #3d3a35;
+}
+
+header p {
+    margin: 8px 0 0;
+    color: #888;
+    font-size: 15px;
+}
+
+
+/* ==============================
+   MAIN
+============================== */
+
+main {
+    max-width: 1600px;
+    margin: auto;
+    padding: 30px 25px 50px;
+}
+
+
+/* ==============================
+   CONTROLS
+============================== */
+
+.controls {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+#searchInput {
+    grid-column: span 10;
+    grid-row: 1;
+    min-width: 0;
+    height: 44px;
+    padding: 0 14px;
+
+    border: 1px solid #ddd7ce;
+    border-radius: 10px;
+
+    background: white;
+    color: #3d3a35;
+
+    font-size: 14px;
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+#addStampButton { grid-column: 11 / span 2; grid-row: 1; }
+#categoryFilter { grid-column: 1 / span 2; grid-row: 2; }
+#favoriteFilter { grid-column: 3 / span 2; grid-row: 2; }
+#sortFilter { grid-column: 5 / span 2; grid-row: 2; width: 100%; }
+#clearFiltersButton { grid-column: 7 / span 3; grid-row: 2; }
+
+#searchInput:focus {
+    border-color: #c9c1b7;
+
+    box-shadow:
+        0 0 0 3px rgba(61, 58, 53, 0.05);
+}
+
+
+/* Dropdowns */
+
+#categoryFilter,
+#favoriteFilter,
+#sortFilter {
+    height: 38px;
+    min-width: 150px;
+
+    padding: 0 14px;
+
+    border: 1px solid #ddd7ce;
+    border-radius: 10px;
+
+    background: white;
+    color: #3d3a35;
+
+    font-size: 14px;
+
+    cursor: pointer;
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+#categoryFilter:focus,
+#favoriteFilter:focus,
+#sortFilter:focus {
+    border-color: #c9c1b7;
+
+    box-shadow:
+        0 0 0 3px rgba(61, 58, 53, 0.05);
+}
+
+
+/* ==============================
+   ADD / CLEAR BUTTONS
+============================== */
+
+.add-button {
+    height: 38px;
+
+    padding: 0 16px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: #3d3a35;
+    color: white;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        opacity 0.2s ease,
+        transform 0.15s ease;
+}
+
+.add-button:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+
+.clear-button {
+    height: 38px;
+
+    padding: 0 16px;
+
+    border: 1px solid #ddd7ce;
+    border-radius: 10px;
+
+    background: #faf9f7;
+    color: #3d3a35;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.15s ease;
+}
+
+.clear-button:hover {
+    background: #f1eee9;
+    transform: translateY(-1px);
+}
+
+
+/* ==============================
+   GALLERY
+============================== */
+#gallery {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+}
+
+/* ==============================
+   EMPTY GALLERY MESSAGE
+============================== */
+
+.empty {
+    grid-column: 1 / -1;
+
+    text-align: center;
+
+    padding: 50px 20px;
+
+    color: #777;
+}
+
+.empty h2 {
+    margin: 0 0 8px;
+
+    font-size: 20px;
+
+    color: #3d3a35;
+}
+
+.empty p {
+    margin: 0;
+
+    font-size: 14px;
+
+    color: #777;
+}
+
+/* ==============================
+   COLLECTION OVERVIEW
+============================== */
+
+#collectionCount {
+    display: inline-block;
+    margin-right: 10px;
+    margin-bottom: 14px;
+}
+
+.collection-overview-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 6px 0 6px;
+}
+
+.collection-overview-row #collectionCount { margin: 0; color: #625b52; font-size: 13px; font-weight: 600; }
+.export-status { color: #625b52; font-size: 12px; }
+
+.export-button {
+    padding: 8px 12px;
+    border: 1px solid #ddd7ce;
+    border-radius: 8px;
+    background: #fff;
+    color: #4e4942;
+    font: inherit;
+    font-size: 12px;
+    cursor: pointer;
+}
+.export-button:hover { background: #f5f2ed; }
+
+#categoryStats {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 7px;
+
+    margin-top: 0;
+
+    vertical-align: middle;
+}
+
+
+/* ==============================
+   CATEGORY OVERVIEW BADGES
+============================== */
+
+.category-stat {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    padding: 5px 9px;
+
+    border-radius: 7px;
+
+    font-size: 11px;
+    font-weight: 600;
+
+    vertical-align: middle;
+
+    background: #eeeae3;
+    color: #625b52;
+}
+
+.category-stat-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 18px;
+    height: 18px;
+
+    padding: 0 5px;
+
+    border-radius: 999px;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    background: rgba(255, 255, 255, 0.55);
+}
+
+/* ==============================
+   CATEGORY TITLE + MANAGEMENT
+============================== */
+
+.category-title-row {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.manage-categories-button {
+    border: none;
+    background: transparent;
+
+    padding: 0 3px;
+
+    cursor: pointer;
+
+    font-size: 12px;
+    line-height: 1;
+
+    transition: opacity 0.15s ease;
+}
+
+.manage-categories-button:hover {
+    opacity: 0.65;
+}
+
+
+/* ==============================
+   CATEGORY MANAGEMENT BUTTONS
+============================== */
+
+.category-manage-actions {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 2px;
+
+    margin-left: 2px;
+}
+
+.category-manage-button {
+    border: none;
+
+    background: transparent;
+
+    padding: 1px 2px;
+
+    cursor: pointer;
+
+    font-size: 11px;
+
+    line-height: 1;
+
+    border-radius: 4px;
+
+    transition:
+        background 0.15s ease,
+        opacity 0.15s ease;
+}
+
+.category-manage-button:hover {
+    background: rgba(61, 58, 53, 0.08);
+}
+
+/* ==============================
+   CLICKABLE CATEGORY BADGES
+============================== */
+
+.category-stat-clickable {
+    cursor: pointer;
+
+    transition:
+        transform 0.15s ease,
+        filter 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.category-stat-clickable:hover {
+    transform: translateY(-1px);
+
+    filter: brightness(0.96);
+
+    box-shadow:
+        0 2px 6px rgba(61, 58, 53, 0.10);
+}
+
+.category-stat-clickable:active {
+    transform: translateY(0);
+
+    box-shadow:
+        0 1px 3px rgba(61, 58, 53, 0.08);
+}
+
+.category-stat-clickable.active {
+    box-shadow:
+        0 0 0 2px rgba(61, 58, 53, 0.25),
+        0 3px 8px rgba(61, 58, 53, 0.12);
+
+    transform: translateY(-1px);
+
+    font-weight: 700;
+}
+
+.category-stat-clickable.active .category-stat-count {
+    font-weight: 800;
+}
+
+/* ==============================
+   CATEGORY BADGE KEYBOARD FOCUS
+============================== */
+
+.category-stat-clickable:focus-visible {
+    outline: 2px solid rgba(61, 58, 53, 0.35);
+    outline-offset: 2px;
+}
+
+/* ==============================
+   CARD
+============================== */
+
+.card {
+    display: flex;
+    flex-direction: column;
+
+    background: #ffffff;
+
+    border: 1px solid #e8e3db;
+    border-radius: 14px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 2px 8px rgba(61, 58, 53, 0.05);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 6px 16px rgba(61, 58, 53, 0.10);
+}
+
+
+/* ==============================
+   CARD IMAGE
+============================== */
+
+.card-image {
+    height: 178px;
+
+    position: relative;
+
+    background: #f5f2ed;
+    overflow: hidden;
+
+    cursor: pointer;
+
+}
+
+.card-image:hover {
+    box-shadow: inset 0 0 0 2px rgba(61, 58, 53, 0.12);
+}
+
+.card-image img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+}
+
+.card-image::after {
+    content: "🔍";
+
+    position: absolute;
+
+    right: 8px;
+    top: 8px;
+
+    width: 18px;
+    height: 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.78);
+
+    font-size: 9px;
+    opacity: 0.78;
+    transition: opacity 0.15s ease;
+
+    pointer-events: none;
+}
+
+.card-image:hover::after { opacity: 1; }
+
+.image-count {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    z-index: 4;
+    padding: 4px 7px;
+    border-radius: 20px;
+    background: rgba(255,255,255,.92);
+    color: #3d3a35;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+/* ==============================
+   MULTIPLE IMAGE THUMBNAILS
+============================== */
+
+.image-thumbnails {
+    position: absolute;
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+
+    display: flex;
+    gap: 6px;
+
+    overflow-x: auto;
+
+    padding: 4px;
+
+    z-index: 3;
+}
+
+
+.card-image .image-thumbnail {
+    width: 34px;
+    height: 34px;
+
+    flex: 0 0 34px;
+
+    object-fit: cover;
+
+    border-radius: 5px;
+
+    border: 2px solid transparent;
+
+    background: #ffffff;
+
+    cursor: pointer;
+
+    opacity: 0.8;
+
+    transition:
+        opacity 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.card-image .image-thumbnail:hover {
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+
+.card-image .image-thumbnail.active {
+    opacity: 1;
+    border-color: #3d3a35;
+}
+
+/* ==============================
+
+.image-upload-field {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.image-upload-heading {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    flex-wrap: wrap;
+    color: #555;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.image-upload-hint {
+    color: #9a9288;
+    font-size: 11px;
+    font-weight: 400;
+}
+
+.new-image-button {
+    align-self: flex-start;
+    min-height: 38px;
+    padding: 8px 13px;
+    border: 1px dashed #cfc8bf;
+    border-radius: 8px;
+    background: #faf9f7;
+    color: #625b52;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+
+.new-image-button:hover {
+    background: #f1eee9;
+    border-color: #aaa39a;
+    transform: translateY(-1px);
+}
+
+.image-preview-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+    gap: 10px;
+}
+
+.image-preview-item {
+    position: relative;
+    min-width: 0;
+    padding: 7px;
+    border: 1px solid #e3ded6;
+    border-radius: 10px;
+    background: #faf9f7;
+}
+
+.image-preview-item .image-preview {
+    display: block;
+    width: 100%;
+    height: 145px;
+    margin: 0;
+    padding: 6px;
+    object-fit: contain;
+    background: #fff;
+    border: 1px solid #e1dbd3;
+    border-radius: 7px;
+}
+
+.image-preview-item .image-preview.clickable {
+    cursor: pointer;
+}
+
+.image-preview-item .image-preview.clickable:hover {
+    box-shadow: inset 0 0 0 2px rgba(61, 58, 53, 0.10);
+}
+
+.image-preview-empty {
+    grid-column: 1 / -1;
+    padding: 10px;
+    color: #8a8278;
+    font-size: 12px;
+}
+
+.image-preview-actions {
+    display: flex;
+    gap: 5px;
+    margin-top: 6px;
+}
+
+.change-image-button,
+.remove-image-button {
+    flex: 1;
+    min-width: 0;
+    padding: 5px 6px;
+    border-radius: 6px;
+    font: inherit;
+    font-size: 10px;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.change-image-button {
+    border: 1px solid #ddd7ce;
+    background: #f1eee9;
+    color: #555049;
+}
+
+.change-image-button:hover {
+    background: #e7e2da;
+}
+
+.remove-image-button {
+    border: 1px solid #ecd0cc;
+    background: #f7e7e5;
+    color: #a04d46;
+}
+
+.remove-image-button:hover {
+    background: #f1d9d6;
+}
+
+.image-preview-label {
+    margin-top: 5px;
+    color: #8a8278;
+    font-size: 9px;
+    text-align: center;
+}
+
+/* ==============================
+   CARD CONTENT
+============================== */
+
+.card-content {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+
+    flex: 1;
+
+    padding: 12px;
+}
+
+
+/* ==============================
+   FAVORITE BUTTON
+============================== */
+
+.favorite-button {
+    position: absolute;
+
+    top: 8px;
+    right: 8px;
+
+    width: 25px;
+    height: 25px;
+
+    padding: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 50%;
+
+    background: #ffffff;
+    color: #aaa39b;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    line-height: 1;
+
+    box-shadow:
+        0 2px 6px rgba(61, 58, 53, 0.12);
+
+    cursor: pointer;
+
+    transition:
+        transform 0.15s ease,
+        color 0.15s ease;
+}
+
+.favorite-button:not(.active) {
+    background: #ffffff;
+    color: #aaa39b;
+}
+
+.favorite-button.active {
+    background: #ffffff;
+    color: #a94343;
+}
+
+.favorite-button:hover {
+    transform: scale(1.08);
+}
+
+
+/* ==============================
+   CARD TITLE
+============================== */
+
+.card-title {
+    margin: 3px 0 6px;
+
+    padding-right: 32px;
+
+    color: #333;
+
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.35;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* ==============================
+   CARD CATEGORY BADGES
+============================== */
+
+.card-categories {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 4px;
+
+    margin: 0 0 7px;
+}
+
+.category-badge {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 3px 6px;
+
+    border-radius: 6px;
+
+    font-size: 9px;
+    font-weight: 600;
+    line-height: 1.2;
+
+    background: #eeeae3;
+    color: #625b52;
+}
+
+/* ==============================
+   CARD DESCRIPTION
+============================== */
+
+.card-description {
+    display: -webkit-box;
+
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
+
+    margin: 0 0 8px;
+
+    color: #777;
+
+    font-size: 11px;
+    line-height: 1.45;
+
+    min-height: 16px;
+}
+
+
+/* ==============================
+   CARD INFORMATION
+============================== */
+
+.card-info {
+    display: flex;
+    flex-direction: column;
+
+    gap: 3px;
+
+    margin-top: 0;
+    margin-bottom: 4px;
+
+    color: #777;
+
+    font-size: 10px;
+    line-height: 1.4;
+}
+
+.info-row {
+    display: flex;
+    align-items: center;
+
+    gap: 5px;
+
+    min-height: 15px;
+}
+
+.info-icon {
+    width: 13px;
+    height: 13px;
+
+    flex: 0 0 13px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.info-icon svg {
+    width: 12px;
+    height: 12px;
+
+    fill: none;
+
+    stroke: #77716a;
+
+    stroke-width: 1.8;
+
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+
+/* ==============================
+   PRICE
+============================== */
+
+.price-row {
+    margin-top: -1px;
+}
+
+.price-row span:last-child {
+    color: #625b54;
+
+    font-size: 10px;
+    font-weight: 500;
+}
+
+
+/* ==============================
+   CARD ACTIONS
+============================== */
+
+.card-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+
+    margin-top: auto;
+    padding-top: 7px;
+}
+
+.edit-button,
+.delete-button {
+    margin: 0;
+
+    padding: 5px 8px;
+
+    border-radius: 6px;
+
+    font-family: inherit;
+    font-size: 10px;
+    line-height: 1.2;
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        transform 0.15s ease;
+}
+
+.edit-button {
+    border: 1px solid #ddd7ce;
+
+    background: #f1eee9;
+    color: #555;
+}
+
+.edit-button:hover {
+    background: #e7e2da;
+    transform: translateY(-1px);
+}
+
+.delete-button {
+    border: 1px solid #ecd0cc;
+
+    background: #f7e7e5;
+    color: #a04d46;
+}
+
+.delete-button:hover {
+    background: #f1d9d6;
+    transform: translateY(-1px);
+}
+
+
+/* ==============================
+   FORM LABELS
+============================== */
+
+#stampForm label {
+    display: flex;
+    flex-direction: column;
+
+    gap: 6px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    color: #555;
+}
+
+
+/* ==============================
+   IMAGE UPLOAD
+============================== */
+
+#stampDescription {
+    height: 76px;
+    min-height: 76px;
+    resize: vertical;
+}
+
+#stampImage {
+    padding: 10px;
+
+    background: #faf9f7;
+
+    cursor: pointer;
+}
+
+
+/* ==============================
+   IMAGE PREVIEW
+============================== */
+
+.image-preview {
+    display: block;
+
+    width: 180px;
+    height: 180px;
+
+    object-fit: contain;
+
+    padding: 8px;
+    margin-top: 8px;
+
+    background: #faf9f7;
+
+    border: 1px solid #ddd7ce;
+    border-radius: 10px;
+}
+
+
+.add-category-button {
+    align-self: flex-start;
+    padding: 7px 10px;
+    border: 1px solid #ddd7ce;
+    border-radius: 7px;
+    background: #faf9f7;
+    color: #625b52;
+    font: inherit;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.add-category-button:hover {
+    background: #f1eee9;
+}
+
+.new-category-box {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.new-category-box input {
+    flex: 1;
+    min-width: 0;
+}
+
+.new-category-box button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 7px;
+    background: #3d3a35;
+    color: #fff;
+    cursor: pointer;
+}
+/* ==============================
+   CATEGORY CHECKBOXES
+============================== */
+
+.category-checkboxes {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 8px;
+}
+
+.category-checkboxes label {
+    display: flex !important;
+
+    flex-direction: row !important;
+    align-items: center;
+
+    gap: 5px !important;
+
+    padding: 8px 12px;
+
+    background: #faf9f7;
+
+    border: 1px solid #ddd7ce;
+    border-radius: 8px;
+
+    font-size: 13px !important;
+    font-weight: normal !important;
+
+    cursor: pointer;
+}
+
+.category-checkboxes label:hover {
+    background: #f3f0eb;
+}
+
+.category-checkboxes input {
+    width: auto !important;
+
+    cursor: pointer;
+}
+
+
+/* ==============================
+   EDIT STAMP POPUP
+============================== */
+
+#addForm.editing-mode {
+    position: fixed;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    width: min(600px, calc(100% - 30px));
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    margin: 0;
+
+    z-index: 2000;
+
+    box-sizing: border-box;
+
+    background: white;
+
+    border-radius: 16px;
+
+    padding: 25px;
+
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.25),
+        0 0 0 100vmax rgba(0, 0, 0, 0.45);
+}
+
+#addForm.editing-mode h2 {
+    margin-top: 0;
+}
+
+#addForm.editing-mode #stampForm {
+    display: flex;
+    flex-direction: column;
+
+    gap: 16px;
+
+    margin-top: 15px;
+}
+
+#addForm.editing-mode #stampForm > label {
+    display: flex;
+    flex-direction: column;
+
+    gap: 7px;
+
+    color: #3d3a35;
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+
+/* ==============================
+   EDIT FORM INPUTS
+============================== */
+
+#addForm.editing-mode input[type="text"],
+#addForm.editing-mode input[type="number"],
+#addForm.editing-mode input[type="date"],
+#addForm.editing-mode textarea {
+    box-sizing: border-box;
+
+    width: 100%;
+
+    padding: 10px 12px;
+
+    border: 1px solid #ddd7cf;
+    border-radius: 8px;
+
+    background: #faf9f7;
+    color: #3d3a35;
+
+    font-family: inherit;
+    font-size: 13px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+#addForm.editing-mode input[type="text"]:focus,
+#addForm.editing-mode input[type="number"]:focus,
+#addForm.editing-mode input[type="date"]:focus,
+#addForm.editing-mode textarea:focus {
+    border-color: #aaa39a;
+
+    background: white;
+
+    box-shadow:
+        0 0 0 3px rgba(61, 58, 53, 0.06);
+}
+
+#addForm.editing-mode textarea {
+    min-height: 90px;
+
+    resize: vertical;
+}
+
+
+/* ==============================
+   EDIT CATEGORY CHECKBOXES
+============================== */
+
+#addForm.editing-mode .category-checkboxes {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 8px;
+
+    margin-top: 2px;
+}
+
+#addForm.editing-mode .category-checkboxes label {
+    display: inline-flex !important;
+
+    flex-direction: row !important;
+    align-items: center;
+
+    gap: 6px !important;
+
+    padding: 7px 10px;
+
+    border: 1px solid #e3ded6;
+    border-radius: 8px;
+
+    background: #faf9f7;
+    color: #555049;
+
+    font-size: 12px !important;
+    font-weight: 500 !important;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+#addForm.editing-mode .category-checkboxes label:hover {
+    background: #f1eee9;
+
+    border-color: #ccc5bb;
+}
+
+#addForm.editing-mode .category-checkboxes input[type="checkbox"] {
+    accent-color: #3d3a35;
+
+    cursor: pointer;
+}
+
+
+/* ==============================
+   FAVORITE CHECKBOX
+============================== */
+
+#addForm.editing-mode #stampFavorite {
+    width: 16px;
+    height: 16px;
+
+    margin: 0;
+
+    cursor: pointer;
+
+    accent-color: #a94343;
+}
+
+#addForm.editing-mode #stampForm > label:has(#stampFavorite) {
+    flex-direction: row;
+    align-items: center;
+
+    gap: 7px;
+
+    cursor: pointer;
+}
+
+
+/* ==============================
+   EDIT PHOTO UPLOAD
+============================== */
+
+#addForm.editing-mode #stampImage {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 10px;
+
+    border: 1px dashed #cfc8bf;
+    border-radius: 8px;
+
+    background: #faf9f7;
+    color: #666057;
+
+    font-size: 12px;
+
+    cursor: pointer;
+}
+
+#addForm.editing-mode #stampImage:hover {
+    background: #f5f2ed;
+
+    border-color: #aaa39a;
+}
+
+
+/* ==============================
+   EDIT IMAGE PREVIEW
+============================== */
+
+#addForm.editing-mode .image-preview {
+    display: block;
+
+    width: 100%;
+    max-height: 220px;
+
+    margin-top: 8px;
+
+    object-fit: contain;
+
+    border: 1px solid #e5e0d9;
+    border-radius: 10px;
+
+    background: #faf9f7;
+}
+
+
+/* ==============================
+   FORM BUTTONS
+============================== */
+
+.form-buttons {
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 8px;
+
+    margin-top: 4px;
+}
+
+.form-buttons button {
+    min-width: 120px;
+    height: 42px;
+
+    padding: 10px 18px;
+
+    border: none;
+    border-radius: 8px;
+
+    font-size: 14px;
+
+    cursor: pointer;
+
+    transition:
+        opacity 0.2s ease,
+        transform 0.15s ease;
+}
+
+.form-buttons button:hover {
+    opacity: 0.85;
+
+    transform: translateY(-1px);
+}
+
+
+/* Save */
+
+#addForm.editing-mode #stampForm button[type="submit"] {
+    padding: 11px 18px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: #3d3a35;
+    color: white;
+
+    font-family: inherit;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.1s ease;
+}
+
+#addForm.editing-mode #stampForm button[type="submit"]:hover {
+    background: #292722;
+}
+
+#addForm.editing-mode #stampForm button[type="submit"]:active {
+    transform: translateY(1px);
+}
+
+
+/* Cancel */
+
+#addForm.editing-mode #cancelButton {
+    padding: 11px 18px;
+
+    border: 1px solid #ddd7cf;
+    border-radius: 8px;
+
+    background: white;
+    color: #555049;
+
+    font-family: inherit;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+#addForm.editing-mode #cancelButton:hover {
+    background: #f5f2ed;
+
+    border-color: #c9c2b9;
+}
+
+
+/* ==============================
+   EDIT POPUP CLOSE BUTTON
+============================== */
+
+.edit-close-button {
+    display: none;
+
+    position: absolute;
+
+    top: 12px;
+    right: 15px;
+
+    width: 34px;
+    height: 34px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: #f0f0f0;
+    color: #555;
+
+    font-size: 24px;
+    line-height: 1;
+
+    cursor: pointer;
+
+    align-items: center;
+    justify-content: center;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+.edit-close-button:hover {
+    background: #ddd;
+    color: #222;
+}
+
+#addForm.editing-mode .edit-close-button {
+    display: flex;
+}
+
+
+/* ==============================
+   BODY / POPUP SCROLL
+============================== */
+
+body.editing-popup-open,
+body.stamp-modal-open {
+    overflow: hidden;
+}
+
+
+/* ==============================
+   STAMP DETAILS MODAL
+============================== */
+
+.stamp-modal {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(0, 0, 0, 0.55);
+
+    z-index: 1000;
+    animation: stamp-modal-backdrop-in 180ms ease-out both;
+}
+
+.stamp-modal-content {
+    position: relative;
+
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 900px;
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    padding: 48px 22px 22px;
+
+    background: white;
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 10px 40px rgba(0, 0, 0, 0.25);
+    transform-origin: center;
+    animation: stamp-modal-content-in 220ms cubic-bezier(.2,.75,.25,1) both;
+}
+
+@keyframes stamp-modal-backdrop-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes stamp-modal-content-in {
+    from { opacity: 0; transform: translateY(8px) scale(.985); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .stamp-modal,
+    .stamp-modal-content { animation: none; }
+}
+
+.modal-close {
+    position: absolute;
+
+    top: 12px;
+    right: 15px;
+
+    width: 38px;
+    height: 38px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: #eeeae3;
+    color: #555;
+
+    font-size: 24px;
+    line-height: 30px;
+
+    cursor: pointer;
+
+    z-index: 2;
+    transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.modal-close:hover {
+    background: #e2ddd5;
+    transform: scale(1.04);
+}
+
+.modal-image {
+    width: 100%;
+    max-height: 450px;
+
+    object-fit: contain;
+
+    margin-bottom: 20px;
+
+    background: #faf9f7;
+
+    border-radius: 10px;
+}
+
+.modal-title {
+    margin-bottom: 10px;
+
+    color: #333;
+
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.modal-description {
+    margin-bottom: 18px;
+
+    color: #777;
+
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.modal-info {
+    color: #666;
+
+    font-size: 14px;
+    line-height: 2;
+}
+
+.modal-info-icon {
+    display: inline-block;
+    width: 17px;
+    height: 17px;
+    margin-right: 3px;
+    vertical-align: -3px;
+    fill: none;
+    stroke: #77716a;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.modal-price {
+    margin-top: 15px;
+
+    color: #444;
+
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* ==============================
+   MULTI-IMAGE STAMP POPUP
+============================== */
+
+.modal-image-gallery {
+    width: 100%;
+}
+
+.modal-main-image-container {
+    position: relative;
+    width: 100%;
+    height: min(58vh, 540px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #faf9f7;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.viewer-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 0 10px;
+    color: #625b52;
+    font-size: 13px;
+    font-weight: 700;
+}
+.viewer-tools { display: flex; gap: 7px; }
+.viewer-tools button {
+    padding: 6px 10px;
+    border: 1px solid #ddd7ce;
+    border-radius: 7px;
+    background: #fff;
+    color: #4e4942;
+    cursor: pointer;
+}
+.viewer-tools button:focus-visible,
+.modal-close:focus-visible,
+.modal-arrow:focus-visible,
+.modal-thumbnail:focus-visible {
+    outline: 2px solid #70685e;
+    outline-offset: 2px;
+}
+.modal-main-image.zoomed { transform: scale(1.7); cursor: zoom-out; }
+.modal-main-image { transition: transform .2s ease; }
+.modal-main-image-container:fullscreen { height: 100vh; border-radius: 0; }
+.modal-main-image-container:fullscreen .modal-main-image { max-height: 100vh; }
+
+.modal-main-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* Popup image navigation arrows */
+
+.modal-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 42px;
+    height: 42px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.94);
+    color: #3d3a35;
+    font-size: 28px;
+    line-height: 1;
+    cursor: pointer;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.modal-arrow:hover {
+    background: #ffffff;
+    transform: translateY(-50%) scale(1.08);
+}
+
+.modal-arrow-left {
+    left: 10px;
+}
+
+.modal-arrow-right {
+    right: 10px;
+}
+
+.modal-thumbnails {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 14px;
+    padding: 6px;
+    overflow-x: auto;
+}
+
+.modal-thumbnail {
+    width: 50px;
+    height: 50px;
+    flex: 0 0 50px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 2px solid transparent;
+    background: #ffffff;
+    cursor: pointer;
+    opacity: 0.75;
+    transition:
+        opacity 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.modal-thumbnail:hover {
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+.modal-thumbnail.active {
+    opacity: 1;
+    border-color: #3d3a35;
+}
+
+/* ==============================
+   MOBILE — GALLERY
+============================== */
+
+@media (max-width: 1400px) {
+
+    #gallery {
+        grid-template-columns: repeat(5, 1fr);
+    }
+
+}
+
+@media (max-width: 1150px) {
+    #gallery { grid-template-columns: repeat(4, 1fr); }
+}
+
+@media (max-width: 900px) {
+    #gallery { grid-template-columns: repeat(3, 1fr); }
+}
+
+
+@media (max-width: 750px) {
+
+    #gallery {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+    }
+
+    .controls {
+        display: flex;
+        align-items: stretch;
+    }
+
+    #searchInput { order: 0; }
+    #addStampButton { order: 1; }
+    #categoryFilter, #favoriteFilter, #sortFilter { order: 2; }
+    #clearFiltersButton { order: 3; }
+
+    #searchInput,
+    #categoryFilter,
+    #favoriteFilter,
+    #sortFilter,
+    .clear-button,
+    .add-button {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .clear-button,
+    .add-button {
+        height: 44px;
+    }
+
+    .form-buttons {
+        flex-direction: column;
+    }
+
+    .form-buttons button {
+        width: 100%;
+    }
+
+    .card-image {
+        height: 180px;
+    }
+
+    .collection-overview-row { align-items: flex-start; }
+
+    .card-title {
+        font-size: 14px;
+    }
+
+    .card-info {
+        font-size: 10px;
+    }
+
+    .favorite-button {
+        width: 25px;
+        height: 25px;
+        font-size: 14px;
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .stamp-modal {
+        padding: 10px;
+    }
+
+    .stamp-modal-content {
+        padding: 52px 18px 18px;
+        border-radius: 12px;
+    }
+
+    .modal-main-image-container { height: min(42vh, 320px); }
+    .viewer-tools button { padding: 6px 8px; font-size: 11px; }
+    .modal-arrow { width: 36px; height: 36px; }
+
+    .modal-image {
+        max-height: 300px;
+    }
+
+    .modal-title {
+        font-size: 20px;
+    }
+
+    #addForm.editing-mode {
+        width: calc(100% - 20px);
+
+        max-height: 92vh;
+
+        padding: 18px;
+
+        border-radius: 12px;
+    }
+
+    #addForm.editing-mode #stampForm {
+        gap: 13px;
+    }
+
+    #addForm.editing-mode #stampForm .form-buttons {
+        flex-direction: column-reverse;
+    }
+
+    #addForm.editing-mode #stampForm .form-buttons button {
+        width: 100%;
+    }
+
+    #addForm.editing-mode .category-checkboxes {
+        gap: 6px;
+    }
+
+    #addForm.editing-mode .category-checkboxes label {
+        padding: 7px 9px;
+    }
+
+}
+
+
+@media (max-width: 480px) {
+
+    #gallery {
+        grid-template-columns: 1fr;
+    }
+
+    .card-image {
+        height: 220px;
+    }
+
+    .controls {
+        flex-direction: column;
+    }
+
+}
+
+
+@media (max-width: 750px) {
+    #addForm.editing-mode .image-preview-container {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+    #addForm.editing-mode .image-preview-container {
+        grid-template-columns: 1fr;
+    }
+}

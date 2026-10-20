@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Personal Collection</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+
+    <div class="header-container">
+
+        <h1>My Personal Collection</h1>
+
+        <p>My Personal Collection Gallery</p>
+
+    </div>
+
+</header>
+
+
+<main>
+
+    <!-- Search and Filter -->
+
+    <div class="controls">
+
+    <input
+        type="text"
+        id="searchInput"
+        placeholder="🔍 Search Items..."
+    >
+
+    <select id="categoryFilter">
+    <option value="all">▦ All Categories</option>
+    </select>
+
+    <select id="favoriteFilter">
+        <option value="all">♥ All Favorites</option>
+        <option value="favorite">♥ Favorites Only</option>
+        <option value="not-favorite">♡ Not Favorites</option>
+    </select>
+
+    <select id="sortFilter">
+        <option value="newest">↕ Sort by Date</option>
+        <option value="oldest">↕ Oldest First</option>
+        <option value="name-asc">A–Z Name</option>
+        <option value="name-desc">Z–A Name</option>
+        <option value="price-low">Price: Low → High</option>
+        <option value="price-high">Price: High → Low</option>
+    </select>
+
+    <button
+        type="button"
+        id="clearFiltersButton"
+        class="clear-button"
+    >
+     Clear Filters
+    </button>
+
+    <button
+        type="button"
+        id="addStampButton"
+        class="add-button"
+    >
+        + Add Stamp
+    </button>
+
+    </div>
+
+    <!-- Collection Count -->
+
+    <div class="collection-overview-row">
+        <div id="collectionCount"></div>
+        <button
+            type="button"
+            id="exportCollectionButton"
+            class="export-button"
+            title="Download a JSON backup of your collection"
+        >
+            Export Collection
+        </button>
+        <span id="exportStatus" class="export-status" role="status" aria-live="polite"></span>
+    </div>
+
+    <div id="categoryStats"></div>
+
+    <!-- Add Stamp Form -->
+
+    <section class="add-form" id="addForm" style="display: none;">
+
+        <button type="button" id="editCloseButton" class="edit-close-button">×</button>
+
+        <h2>Add New Stamp</h2>
+
+        <form id="stampForm">
+
+            <label>
+                Stamp Name
+
+                <input
+                    type="text"
+                    id="stampName"
+                    required
+                >
+            </label>
+
+
+            <label>
+                Description
+
+                <textarea
+                    id="stampDescription"
+                ></textarea>
+            </label>
+
+
+            <label>
+                Price (RM)
+
+                <input
+                    type="number"
+                    id="stampPrice"
+                    step="0.01"
+                    min="0"
+                >
+            </label>
+
+
+            <label>
+                Location
+
+                <input
+                    type="text"
+                    id="stampLocation"
+                >
+            </label>
+
+<label>
+
+    <div class="category-title-row">
+
+        <span>Category</span>
+
+        <button
+            type="button"
+            id="manageCategoriesButton"
+            class="manage-categories-button"
+            title="Manage categories"
+        >
+            ✏️
+        </button>
+
+    </div>
+
+    <div
+        class="category-options category-checkboxes"
+        id="categoryOptions"
+    >
+        <!-- Categories will be loaded here -->
+    </div>
+
+    <button
+        type="button"
+        id="addCategoryButton"
+        class="add-category-button"
+    >
+        ＋ Add Category
+    </button>
+
+    <div
+        id="newCategoryBox"
+        class="new-category-box"
+        style="display: none;"
+    >
+        <input
+            type="text"
+            id="newCategoryInput"
+            placeholder="Enter new category"
+        >
+
+        <button
+            type="button"
+            id="saveCategoryButton"
+        >
+            Add
+        </button>
+    </div>
+
+</label>
+
+
+            <label>
+                Collection Date
+
+                <input
+                    type="date"
+                    id="stampDate"
+                >
+            </label>
+
+
+            <label>
+                <input
+                    type="checkbox"
+                    id="stampFavorite"
+                >
+
+                Favorite
+
+            </label>
+
+
+                        <!-- Image manager -->
+            <div class="image-upload-field">
+
+                <div class="image-upload-heading">
+                    <span>Stamp Images</span>
+                    <span id="imageUploadHint" class="image-upload-hint">
+                        Add one or more images
+                    </span>
+                </div>
+
+                <div
+                    id="imagePreviewContainer"
+                    class="image-preview-container"
+                    aria-live="polite"
+                ></div>
+
+                <button
+                    type="button"
+                    id="addNewImageButton"
+                    class="new-image-button"
+                >
+                    ＋ New Image
+                </button>
+
+                <input
+                    type="file"
+                    id="stampImage"
+                    accept="image/*"
+                    multiple
+                    hidden
+                >
+
+            </div>
+
+            <div class="form-buttons">
+
+    <button
+        type="button"
+        id="cancelButton"
+    >
+        Cancel
+    </button>
+
+    <button
+        type="submit"
+    >
+        Save Stamp
+    </button>
+
+</div>
+
+        </form>
+
+    </section>
+
+
+    <!-- Gallery -->
+
+    <section
+        class="gallery"
+        id="gallery"
+    >
+
+    </section>
+
+    <!-- Stamp Details Popup -->
+
+<div
+    class="stamp-modal"
+    id="stampModal"
+    style="display: none;"
+>
+
+    <div class="stamp-modal-content">
+
+        <button
+            type="button"
+            class="modal-close"
+            id="modalClose"
+            aria-label="Close stamp viewer"
+        >
+            ×
+        </button>
+
+        <div id="modalContent"></div>
+
+    </div>
+
+</div>
+</main>
+
+
+<!-- Supabase -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<!-- Our website code -->
+
+<script src="script.js"></script>
+
+
+</body>
+
+</html>
