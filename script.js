@@ -32,14 +32,22 @@ function getPageUrl(path) {
 
 async function getFolderContents(path) {
   const encodedPath = encodePath(path);
+
   const endpoint = encodedPath
     ? `${API_BASE}/${encodedPath}?ref=${BRANCH}`
-    : `${API_BASE}/?ref=${BRANCH}`;
+    : `${API_BASE}?ref=${BRANCH}`;
 
-  const response = await fetch(endpoint);
+  const response = await fetch(endpoint, {
+    cache: "no-store",
+    headers: {
+      Accept: "application/vnd.github+json"
+    }
+  });
 
   if (!response.ok) {
-    throw new Error(`Unable to read folder: ${path || "root"}`);
+    throw new Error(
+      `Unable to read folder: ${path || "root"} (HTTP ${response.status})`
+    );
   }
 
   return response.json();
@@ -111,16 +119,16 @@ async function loadWebsites() {
           );
 
           // Display websites and folders containing subfolders.
-          if (hasIndex || hasSubfolders) {
-            return {
-              name: folder.name,
-              path: folderPath,
-              hasIndex,
-              hasSubfolders
-            };
-          }
+if (contents.length > 0) {
+  return {
+    name: folder.name,
+    path: folderPath,
+    hasIndex,
+    hasSubfolders
+  };
+}
 
-          return null;
+return null;
         } catch (error) {
           console.warn(`Skipping ${folderPath}`, error);
           return null;
