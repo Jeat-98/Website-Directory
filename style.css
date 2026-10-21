@@ -35,7 +35,7 @@ main {
 
 .website-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 20px;
 }
 
@@ -48,6 +48,8 @@ main {
   text-decoration: none;
   color: inherit;
   transition: transform 0.2s, box-shadow 0.2s;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .website-card:hover {
@@ -57,13 +59,17 @@ main {
 
 .website-card h2 {
   margin: 0 0 10px;
-  font-size: 14px;
+  font-size: 16px;
+  line-height: 1.4;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: normal;
 }
 
 .website-card p {
   margin: 0;
   color: #6b7280;
-  font-size: 8px;
+  font-size: 12px;
   line-height: 1.5;
 }
 
