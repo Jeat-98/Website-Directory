@@ -128,7 +128,7 @@ async function loadWebsites() {
       })
     );
 
-    const folderOrder = [
+const folderOrder = [
   "Test-Website",
   "Collection-Gallery_v5",
   "Collection-Gallery_v6",
@@ -141,15 +141,16 @@ const entries = results
     const indexA = folderOrder.indexOf(a.name);
     const indexB = folderOrder.indexOf(b.name);
 
-    // Folders in folderOrder appear first.
-    if (indexA === -1 && indexB === -1) {
-      return a.name.localeCompare(b.name);
+    // Put manually ordered folders first.
+    if (indexA !== -1 && indexB !== -1) {
+      return indexA - indexB;
     }
 
-    if (indexA === -1) return 1;
-    if (indexB === -1) return -1;
+    if (indexA !== -1) return -1;
+    if (indexB !== -1) return 1;
 
-    return indexA - indexB;
+    // Automatically sort all other folders alphabetically.
+    return a.name.localeCompare(b.name);
   });
 
     websiteList.innerHTML = "";
