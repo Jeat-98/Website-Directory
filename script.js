@@ -76,9 +76,8 @@ async function getDescription(path) {
 }
 
 function createCard(name, description, url) {
-  const card = document.createElement("a");
-  card.className = "website-card";
-  card.href = url;
+const card = document.createElement("div");
+card.className = "website-card";
 
   const title = document.createElement("h2");
   title.textContent = name;
@@ -86,8 +85,14 @@ function createCard(name, description, url) {
   const detail = document.createElement("p");
   detail.textContent = description;
 
-  card.append(title, detail);
-  return card;
+const link = document.createElement("a");
+link.className = "website-card-link";
+link.href = url;
+
+link.append(title, detail);
+card.appendChild(link);
+
+return card;
 }
 
 async function loadWebsites() {
@@ -188,26 +193,38 @@ const entries = results
       entries.map(async entry => {
         const description = await getDescription(entry.path);
 
-        // If a folder has index.html, open its website directly.
-        if (entry.hasIndex) {
-          return createCard(
-            entry.name,
-            description,
-            `./${entry.path
-              .split("/")
-              .map(encodeURIComponent)
-              .join("/")}/`
-          );
-        }
+// Always open the directory listing when clicking the card.
+const card = createCard(
+  `📁 ${entry.name}`,
+  description === "Click to open"
+    ? "Open folder to view contents"
+    : description,
+  getPageUrl(entry.path)
+);
 
-        // Otherwise, open the folder to browse its subfolders.
-        return createCard(
-          `📁 ${entry.name}`,
-          description === "Click to open"
-            ? "Open to view subfolders"
-            : description,
-          getPageUrl(entry.path)
-        );
+// Add a separate button to launch the website.
+if (entry.hasIndex) {
+  const openButton = document.createElement("button");
+  openButton.className = "edit-description-button";
+  openButton.textContent = "Open Website";
+  openButton.type = "button";
+
+  openButton.addEventListener("click", event => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const websiteUrl = `./${entry.path
+      .split("/")
+      .map(encodeURIComponent)
+      .join("/")}/`;
+
+    window.location.href = websiteUrl;
+  });
+
+  card.appendChild(openButton);
+}
+
+return card;
       })
     );
 
