@@ -16,6 +16,16 @@ const currentPath = (params.get("path") || "")
 const API_BASE =
   `https://api.github.com/repos/${GITHUB_USERNAME}/${REPOSITORY_NAME}/contents`;
 
+// Preferred display order.
+// Any other folders will appear alphabetically afterward.
+const folderOrder = [
+  "Test-Website",
+  "Collection-Gallery_v5",
+  "Collection-Gallery_v6",
+  "Collection-Gallery_v7"
+];
+
+// Encode each path segment safely.
 function encodePath(path) {
   return path
     .split("/")
@@ -24,12 +34,14 @@ function encodePath(path) {
     .join("/");
 }
 
+// Generate the URL for browsing a directory.
 function getPageUrl(path) {
   return path
     ? `?path=${encodeURIComponent(path)}`
     : window.location.pathname;
 }
 
+// Retrieve the latest folder contents from GitHub.
 async function getFolderContents(path) {
   const encodedPath = encodePath(path);
 
@@ -46,13 +58,14 @@ async function getFolderContents(path) {
 
   if (!response.ok) {
     throw new Error(
-      `Unable to read folder: ${path || "root"} (HTTP ${response.status})`
+      `Unable to read folder "${path || "root"}". HTTP ${response.status}`
     );
   }
 
   return response.json();
 }
 
+// Read the description from each folder's description.txt.
 async function getDescription(path) {
   try {
     const filePath = path
@@ -61,23 +74,30 @@ async function getDescription(path) {
       .join("/");
 
     const url = `./${filePath}/description.txt`;
-    const response = await fetch(url);
+    const response = await fetch(url, { cache: "no-store" });
 
     if (response.ok) {
       const text = (await response.text()).trim();
 
-      if (text) return text;
+      if (text) {
+        return text;
+      }
     }
   } catch (error) {
-    console.warn(`Description unavailable for ${path}`, error);
+    console.warn(
+      `Description unavailable for "${path}"`,
+      error
+    );
   }
 
   return "Click to open";
 }
 
+// Create a folder or website card.
 function createCard(name, description, url) {
-const card = document.createElement("div");
-card.className = "website-card";
+  const card = document.createElement("a");
+  card.className = "website-card";
+  card.href = url;
 
   const title = document.createElement("h2");
   title.textContent = name;
@@ -85,25 +105,41 @@ card.className = "website-card";
   const detail = document.createElement("p");
   detail.textContent = description;
 
-const link = document.createElement("a");
-link.className = "website-card-link";
-link.href = url;
+  card.append(title, detail);
 
-link.append(title, detail);
-card.appendChild(link);
-
-return card;
+  return card;
 }
 
+// Sort preferred folders first, then all other folders alphabetically.
+function sortFolders(a, b) {
+  const indexA = folderOrder.indexOf(a.name);
+  const indexB = folderOrder.indexOf(b.name);
+
+  if (indexA !== -1 && indexB !== -1) {
+    return indexA - indexB;
+  }
+
+  if (indexA !== -1) return -1;
+  if (indexB !== -1) return 1;
+
+  return a.name.localeCompare(b.name);
+}
+
+// Detect and display websites and nested directories.
 async function loadWebsites() {
   websiteList.innerHTML =
     '<p class="empty-message">Loading folders...</p>';
 
   try {
+    // Get folders at the current repository location.
     const items = await getFolderContents(currentPath);
 
-    const folders = items.filter(item => item.type === "dir");
+    const folders = items.filter(
+      item => item.type === "dir"
+    );
 
+    // Inspect each folder to determine whether it is a website
+    // or contains other folders.
     const results = await Promise.all(
       folders.map(async folder => {
         const folderPath = currentPath
@@ -123,54 +159,42 @@ async function loadWebsites() {
             item => item.type === "dir"
           );
 
-          // Display websites and folders containing subfolders.
-if (contents.length > 0) {
-  return {
-    name: folder.name,
-    path: folderPath,
-    hasIndex,
-    hasSubfolders
-  };
-}
+          // Preserve the previous behavior:
+          // show website folders or folders containing subfolders.
+          if (hasIndex || hasSubfolders) {
+            return {
+              name: folder.name,
+              path: folderPath,
+              hasIndex,
+              hasSubfolders
+            };
+          }
 
-return null;
+          return null;
         } catch (error) {
-          console.warn(`Skipping ${folderPath}`, error);
+          console.warn(
+            `Skipping folder "${folderPath}"`,
+            error
+          );
+
           return null;
         }
       })
     );
 
-const folderOrder = [
-  "Test-Website",
-  "Collection-Gallery_v5",
-  "Collection-Gallery_v6",
-  "Collection-Gallery_v7"
-];
-
-const entries = results
-  .filter(Boolean)
-  .sort((a, b) => {
-    const indexA = folderOrder.indexOf(a.name);
-    const indexB = folderOrder.indexOf(b.name);
-
-    // Put manually ordered folders first.
-    if (indexA !== -1 && indexB !== -1) {
-      return indexA - indexB;
-    }
-
-    if (indexA !== -1) return -1;
-    if (indexB !== -1) return 1;
-
-    // Automatically sort all other folders alphabetically.
-    return a.name.localeCompare(b.name);
-  });
+    // Remove invalid entries and sort the remaining folders.
+    const entries = results
+      .filter(Boolean)
+      .sort(sortFolders);
 
     websiteList.innerHTML = "";
 
-    // Add navigation back to the parent folder.
+    // Add a Back card when browsing a nested directory.
     if (currentPath) {
-      const parentPath = currentPath.split("/").slice(0, -1).join("/");
+      const parentPath = currentPath
+        .split("/")
+        .slice(0, -1)
+        .join("/");
 
       const backCard = createCard(
         "← Back",
@@ -181,61 +205,63 @@ const entries = results
       websiteList.appendChild(backCard);
     }
 
+    // Display a message if no matching folders exist.
     if (entries.length === 0) {
       const message = document.createElement("p");
       message.className = "empty-message";
       message.textContent = "No website folders found here.";
+
       websiteList.appendChild(message);
       return;
     }
 
+    // Build cards and load their descriptions.
     const cards = await Promise.all(
       entries.map(async entry => {
         const description = await getDescription(entry.path);
 
-// Always open the directory listing when clicking the card.
-const card = createCard(
-  `📁 ${entry.name}`,
-  description === "Click to open"
-    ? "Open folder to view contents"
-    : description,
-  getPageUrl(entry.path)
-);
+        // Preserve the previous behavior:
+        // folders with index.html open their website directly.
+        if (entry.hasIndex) {
+          const websiteUrl =
+            `./${encodePath(entry.path)}/`;
 
-// Add a separate button to launch the website.
-if (entry.hasIndex) {
-  const openButton = document.createElement("button");
-  openButton.className = "edit-description-button";
-  openButton.textContent = "Open Website";
-  openButton.type = "button";
+          return createCard(
+            entry.name,
+            description,
+            websiteUrl
+          );
+        }
 
-  openButton.addEventListener("click", event => {
-    event.preventDefault();
-    event.stopPropagation();
-
-    const websiteUrl = `./${entry.path
-      .split("/")
-      .map(encodeURIComponent)
-      .join("/")}/`;
-
-    window.location.href = websiteUrl;
-  });
-
-  card.appendChild(openButton);
-}
-
-return card;
+        // Folders without index.html open their directory listing.
+        return createCard(
+          `📁 ${entry.name}`,
+          description === "Click to open"
+            ? "Open to view subfolders"
+            : description,
+          getPageUrl(entry.path)
+        );
       })
     );
 
-    cards.forEach(card => websiteList.appendChild(card));
+    cards.forEach(card => {
+      websiteList.appendChild(card);
+    });
 
   } catch (error) {
     console.error("Directory loading error:", error);
 
-    websiteList.innerHTML =
-      '<p class="empty-message">Unable to load folders. Please check the repository and try again.</p>';
+    websiteList.innerHTML = "";
+
+    const message = document.createElement("p");
+    message.className = "empty-message";
+
+    message.textContent =
+      "Unable to load folders. Check the repository, branch, and GitHub API availability.";
+
+    websiteList.appendChild(message);
   }
 }
 
+// Start loading the directory.
 loadWebsites();
