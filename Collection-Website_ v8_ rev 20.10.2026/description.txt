@@ -1,4 +1,2 @@
 v8_ 20.10.2026
-<p>-6 Columns per row</p>
-<p>-Magnifier icon & Fullscreen mode removed</p>
-<p>-Description input textarea height adjusted</p>
+-6 Columns per row / Magnifier icon & Fullscreen mode removed / Description input textarea height adjusted
