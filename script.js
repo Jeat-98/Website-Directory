@@ -75,44 +75,97 @@ async function getFolderContents(path) {
   return data;
 }
 
-// Read the description.txt file inside a folder.
-async function getDescription(path) {
-  try {
-    const filePath = encodePath(path);
-    const url = `./${filePath}/description.txt`;
+// Read descriptions embedded in index.html.
+const descriptionData = document.getElementById("website-descriptions");
+const descriptions = descriptionData ? JSON.parse(descriptionData.textContent) : {};
 
-    const response = await fetch(url, {
-      cache: "no-store"
-    });
-
-    if (response.ok) {
-      const text = (await response.text()).trim();
-
-      if (text) {
-        return text;
-      }
-    }
-  } catch (error) {
-    console.warn(`Description unavailable for "${path}":`, error);
-  }
-
-  return "Click to open";
+function getDescription(path) {
+  return descriptions[path] || "";
 }
 
-// Create a clickable card.
-function createCard(name, description, url) {
-  const card = document.createElement("a");
-
+// Build a card with an always-visible description and popup editing.
+function createCard(name, description, url, descriptionKey = null) {
+  const card = document.createElement("article");
   card.className = "website-card";
-  card.href = url;
+
+  const titleLink = document.createElement("a");
+  titleLink.className = "card-title-link";
+  titleLink.href = url;
 
   const title = document.createElement("h2");
   title.textContent = name;
+  titleLink.appendChild(title);
+  card.appendChild(titleLink);
 
-  const detail = document.createElement("p");
-  detail.textContent = description;
+  const storageKey = descriptionKey
+    ? `website-description:${descriptionKey}`
+    : null;
+  const savedDescription = storageKey
+    ? localStorage.getItem(storageKey)
+    : null;
+  const initialDescription = savedDescription ?? description;
 
-  card.append(title, detail);
+  const descriptionSection = document.createElement("section");
+  descriptionSection.className = "description-section";
+
+  const preview = document.createElement("p");
+  preview.className = "description-preview";
+  preview.textContent = initialDescription;
+  descriptionSection.appendChild(preview);
+
+  if (storageKey) {
+    const editButton = document.createElement("button");
+    editButton.type = "button";
+    editButton.className = "description-edit-button";
+    editButton.setAttribute("aria-label", `Edit description for ${name}`);
+    editButton.title = "Edit description";
+    editButton.textContent = "✎";
+
+    const dialog = document.createElement("dialog");
+    dialog.className = "description-dialog";
+
+    const dialogTitle = document.createElement("h3");
+    dialogTitle.textContent = `Edit description: ${name}`;
+
+    const textarea = document.createElement("textarea");
+    textarea.value = initialDescription;
+    textarea.rows = 6;
+    textarea.setAttribute("aria-label", `Description for ${name}`);
+
+    const actions = document.createElement("div");
+    actions.className = "dialog-actions";
+
+    const cancelButton = document.createElement("button");
+    cancelButton.type = "button";
+    cancelButton.className = "dialog-cancel";
+    cancelButton.textContent = "Cancel";
+    cancelButton.addEventListener("click", () => dialog.close());
+
+    const saveButton = document.createElement("button");
+    saveButton.type = "button";
+    saveButton.className = "dialog-save";
+    saveButton.textContent = "Save description";
+    saveButton.addEventListener("click", () => {
+      const updatedDescription = textarea.value.trim();
+      localStorage.setItem(storageKey, updatedDescription);
+      preview.textContent = updatedDescription;
+      dialog.close();
+    });
+
+    actions.append(cancelButton, saveButton);
+    dialog.append(dialogTitle, textarea, actions);
+
+    editButton.addEventListener("click", () => {
+      textarea.value = preview.textContent;
+      dialog.showModal();
+      textarea.focus();
+    });
+
+    descriptionSection.append(editButton);
+    card.append(descriptionSection, dialog);
+  } else {
+    card.appendChild(descriptionSection);
+  }
 
   return card;
 }
@@ -200,7 +253,7 @@ async function loadWebsites() {
       websiteList.appendChild(
         createCard(
           "← Back",
-          parentPath || "Return to main directory",
+          "",
           getPageUrl(parentPath)
         )
       );
@@ -220,7 +273,7 @@ async function loadWebsites() {
     // Create cards and load descriptions.
     const cards = await Promise.all(
       entries.map(async entry => {
-        const description = await getDescription(entry.path);
+        const description = getDescription(entry.path);
 
         // Preserve the previous behavior:
         // open the website directly when index.html exists.
@@ -230,17 +283,17 @@ async function loadWebsites() {
           return createCard(
             entry.name,
             description,
-            websiteUrl
+            websiteUrl,
+            entry.path
           );
         }
 
         // Otherwise, open the directory to browse subfolders.
         return createCard(
           `📁 ${entry.name}`,
-          description === "Click to open"
-            ? "Open to view subfolders"
-            : description,
-          getPageUrl(entry.path)
+          description,
+          getPageUrl(entry.path),
+          entry.path
         );
       })
     );
