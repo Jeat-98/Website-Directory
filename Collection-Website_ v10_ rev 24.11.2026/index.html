@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Personal Collection</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="header-container">
+
+        <h1>My Personal Collection Gallery</h1>
+        <p>Version 11.1_ rev 23/11/2026</p>
+
+    </div>
+
+</header>
+
+
+<main>
+
+    <!-- Search and Filter -->
+
+    <div class="controls">
+
+    <input
+        type="text"
+        id="searchInput"
+        placeholder="🔍 Search items..."
+    >
+
+    <details id="categoryFilter" class="category-filter">
+        <summary>▦ All Categories</summary>
+        <div id="categoryFilterOptions" class="category-filter-options"></div>
+    </details>
+
+    <details id="ipBrandFilter" class="ip-brand-filter">
+        <summary>▦ All IP / Brands</summary>
+        <div id="ipBrandFilterOptions" class="ip-brand-filter-options"></div>
+    </details>
+
+    <select id="favoriteFilter">
+        <option value="all">♥ All Favorites</option>
+        <option value="favorite">♥ Favorites Only</option>
+        <option value="not-favorite">♡ Not Favorites</option>
+    </select>
+
+    <select id="sortFilter">
+        <option value="newest">↕ Sort by Date</option>
+        <option value="oldest">↕ Oldest First</option>
+        <option value="name-asc">A–Z Name</option>
+        <option value="name-desc">Z–A Name</option>
+        <option value="price-low">Price: Low → High</option>
+        <option value="price-high">Price: High → Low</option>
+    </select>
+
+    <button
+        type="button"
+        id="clearFiltersButton"
+        class="clear-button"
+    >
+     Clear Filters
+    </button>
+
+    <button
+        type="button"
+        id="addItemButton"
+        class="add-button"
+    >
+        + Add Item
+    </button>
+
+    </div>
+
+    <!-- Collection Stats and Export -->
+
+    <div class="collection-overview-row">
+        <div id="collectionCount"></div>
+        <button
+            type="button"
+            id="exportCollectionButton"
+            class="export-button"
+            title="Download a JSON backup of your collection"
+        >
+            Export Collection
+        </button>
+        <span id="exportStatus" class="export-status" role="status" aria-live="polite"></span>
+    </div>
+
+    <div id="categoryStats"></div>
+
+    <!-- Add Item Form -->
+
+    <div id="popupBackdrop" class="popup-backdrop" aria-hidden="true"></div>
+
+    <section class="add-form" id="addForm" style="display: none;">
+
+        <button type="button" id="editCloseButton" class="edit-close-button">×</button>
+
+        <h2>Add New Item</h2>
+
+        <form id="itemForm">
+
+            <label>
+                Item Name
+
+                <input
+                    type="text"
+                    id="itemName"
+                    required
+                >
+            </label>
+
+
+            <label>
+                Description
+
+                <textarea
+                    id="itemDescription"
+                ></textarea>
+            </label>
+
+
+            <label>
+                Price (RM)
+
+                <input
+                    type="number"
+                    id="itemPrice"
+                    step="0.01"
+                    min="0"
+                >
+            </label>
+
+
+            <label>
+                Location
+
+                <input
+                    type="text"
+                    id="itemLocation"
+                >
+            </label>
+
+            <div class="category-form-field ip-brand-form-field">
+                <div class="category-title-row">
+                    <span>IP / Brand</span>
+                    <button
+                        type="button"
+                        id="manageIPBrandsButton"
+                        class="manage-categories-button"
+                        title="Manage IP / Brands"
+                        aria-label="Manage IP / Brands"
+                    >
+                        ✏️
+                    </button>
+                </div>
+
+                <div
+                    class="category-options category-checkboxes"
+                    id="ipBrandOptions"
+                >
+                    <!-- IP / Brand options will be loaded from saved collections -->
+                </div>
+
+                <button
+                    type="button"
+                    id="addIPBrandButton"
+                    class="add-category-button"
+                >
+                    ＋ Add IP / Brand
+                </button>
+
+                <div
+                    id="newIPBrandBox"
+                    class="new-category-box"
+                    style="display: none;"
+                >
+                    <input
+                        type="text"
+                        id="newIPBrandInput"
+                        placeholder="Enter new IP / Brand"
+                    >
+
+                    <button
+                        type="button"
+                        id="saveIPBrandButton"
+                    >
+                        Add
+                    </button>
+                </div>
+            </div>
+
+<div class="category-form-field">
+
+    <div class="category-title-row">
+
+        <span>Category</span>
+
+        <button
+            type="button"
+            id="manageCategoriesButton"
+            class="manage-categories-button"
+            title="Manage categories"
+        >
+            ✏️
+        </button>
+
+    </div>
+
+    <div
+        class="category-options category-checkboxes"
+        id="categoryOptions"
+    >
+        <!-- Categories will be loaded here -->
+    </div>
+
+    <button
+        type="button"
+        id="addCategoryButton"
+        class="add-category-button"
+    >
+        ＋ Add Category
+    </button>
+
+    <div
+        id="newCategoryBox"
+        class="new-category-box"
+        style="display: none;"
+    >
+        <input
+            type="text"
+            id="newCategoryInput"
+            placeholder="Enter new category"
+        >
+
+        <button
+            type="button"
+            id="saveCategoryButton"
+        >
+            Add
+        </button>
+    </div>
+
+</div>
+
+
+            <label>
+                Date Added
+
+                <input
+                    type="date"
+                    id="itemDate"
+                >
+            </label>
+
+
+            <label>
+                <input
+                    type="checkbox"
+                    id="itemFavorite"
+                >
+
+                Favorite
+
+            </label>
+
+
+            <div class="image-upload-section">
+                <h3>Item Images</h3>
+                <p>Add one or more images</p>
+
+                <label class="image-upload-input-label">
+                    Item Images
+                    <input
+                        type="file"
+                        id="itemImage"
+                        accept="image/*"
+                        multiple
+                    >
+                </label>
+
+            </div>
+
+            <button type="button" id="addImageButton" class="image-action-button add-image-button">
+                + New Image
+            </button>
+
+            <div class="form-buttons">
+
+    <button
+        type="button"
+        id="cancelButton"
+    >
+        Cancel
+    </button>
+
+    <button
+        type="submit"
+    >
+        Save Item
+    </button>
+
+</div>
+
+        </form>
+
+    </section>
+
+
+    <!-- Gallery -->
+
+    <section
+        class="gallery"
+        id="gallery"
+    >
+
+    </section>
+
+    <!-- Item Details Popup -->
+
+<div
+    class="item-modal"
+    id="itemModal"
+    style="display: none;"
+>
+
+    <div class="item-modal-content">
+
+        <button
+            type="button"
+            class="modal-close"
+            id="modalClose"
+            aria-label="Close item viewer"
+        >
+            ×
+        </button>
+
+        <div id="modalContent"></div>
+
+    </div>
+
+</div>
+</main>
+
+
+<!-- Supabase -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<!-- Our website code -->
+
+<script src="script.js"></script>
+
+
+</body>
+
+</html>
